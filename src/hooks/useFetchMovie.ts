@@ -9,7 +9,7 @@ type UseFetchMoviesProps = {
 
 export const useFetchMovies = ({
   query = "",
-  page = 5,
+  page = 1,
 }: UseFetchMoviesProps) => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(true);

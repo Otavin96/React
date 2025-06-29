@@ -1,32 +1,45 @@
-import { useState } from "react";
+import { debounce } from "lodash";
+import { useState, useMemo, useEffect } from "react";
 import { ImSearch } from "react-icons/im";
 
-type NavBarProps = {
-  handleSearch(query: string): void;
+type SearchInputProps = {
+  onSearch: (query: string) => void;
 };
 
-function Navbar({ handleSearch }: NavBarProps) {
-  const [search, setSearch] = useState("");
+function Navbar({ onSearch }: SearchInputProps) {
+  const [, setValue] = useState("");
+
+  const debouncedSearch = useMemo(() => debounce(onSearch, 500), [onSearch]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setValue(newValue);
+    debouncedSearch(newValue);
+  };
+
+  useEffect(() => {
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [debouncedSearch]);
 
   return (
-    <ul className="flex w-full h-12 bg-teal-400 items-center justify-between">
-      <span className="text-md font-bold uppercase pl-10 cursor-pointer">
+    <ul className="flex w-full h-12 bg-teal-300 items-center justify-between">
+      <a
+        href="/"
+        className="text-md font-bold text-gray-600 uppercase pl-10 cursor-pointer"
+      >
         Home
-      </span>
-
-      <li>{search}</li>
+      </a>
 
       <li className="flex pr-10 items-center gap-3">
         <input
           className="p-1 w-72 bg-white rounded-2xl text-black"
           type="text"
-          placeholder="Pesquisar"
-          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Buscar filme..."
+          onChange={handleChange}
         />
-        <ImSearch
-          onClick={() => handleSearch(search)}
-          className="cursor-pointer"
-        />
+        <ImSearch className="cursor-pointer" color="#4a5565" />
       </li>
     </ul>
   );
