@@ -1,11 +1,10 @@
-const api = () => {
-    const options = {
-        method: 'GET',
-        headers: {accept: 'application/json', Authorization: 'Bearer c2c58db7'}
-    };
+import axios from "axios";
 
-fetch('https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc', options)
-  .then(res => res.json())
-  .then(res => console.log(res))
-  .catch(err => console.error(err));
-}
+export const api = axios.create({
+  baseURL: "https://api.themoviedb.org/3",
+  headers: {
+    accept: "application/json",
+    Authorization:
+      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4Yjc3YTFiN2ZmNWYyZDQ2Nzc3YzMwNGQyMTA1NmM3ZCIsIm5iZiI6MTcyMzkzOTE2Ny4yOTUsInN1YiI6IjY2YzEzOTVmMjE0ZTIyNDJlOTkyMWMzYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.6STqxtAHtf3Hzbe08dxk3hmKZfgtAsbuqtKXRME45GY",
+  },
+});

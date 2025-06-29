@@ -1,54 +1,29 @@
 import { useState } from "react";
-
-
-export interface FilmesResponse {
-  adult: boolean
-  backdrop_path: string
-  genre_ids: number[]
-  id: number
-  original_language: string
-  original_title: string
-  overview: string
-  popularity: number
-  poster_path: string
-  release_date: string
-  title: string
-  video: boolean
-  vote_average: number
-  vote_count: number
-}
-
+import CardMovie from "./components/Card/cardMovie";
+import Navbar from "./components/Navbar/navbar";
+import { useFetchMovies } from "./hooks/useFetchMovie";
 
 function App() {
+  const [query, setQuery] = useState("");
+  const { movies, isLoading, error } = useFetchMovies({ query });
 
-  const [filmes, setFilmes] = useState<FilmesResponse[]>([])
+  console.log(movies);
 
-  const url = 'https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=false&language=en-US&page=10&sort_by=popularity.desc';
-  const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4Yjc3YTFiN2ZmNWYyZDQ2Nzc3YzMwNGQyMTA1NmM3ZCIsIm5iZiI6MTcyMzkzOTE2Ny4yOTUsInN1YiI6IjY2YzEzOTVmMjE0ZTIyNDJlOTkyMWMzYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.6STqxtAHtf3Hzbe08dxk3hmKZfgtAsbuqtKXRME45GY'
-    }
+  if (isLoading) return <p>Carregando...</p>;
+  if (movies.length === 0)
+    return <p>Não foi encontrado um filme com esse titulo...</p>;
+  if (error) return <p>Erro ao buscar filmes: {error.message}</p>;
+
+  const handleSearch = (query: string) => {
+    setQuery(query);
   };
 
-  fetch(url, options)
-    .then(res => res.json())
-    .then(json => setFilmes(json.results))
-    .catch(err => console.error(err));
-
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
-      <h1 className="font-bold text-3xl uppercase">Olá Mundo!</h1>
-      {
-        filmes.map((item, index) => (
-          <ul key={index} className="flex-col">
-            <li>{item.title}</li>
-          </ul>
-        ))
-      }
-    </div>
-  )
+    <main className="grid h-full justify-items-center bg-gray-100">
+      <Navbar handleSearch={handleSearch} />
+      <CardMovie movies={movies} />
+    </main>
+  );
 }
 
-export default App
+export default App;
