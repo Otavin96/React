@@ -1,6 +1,5 @@
 import { debounce } from "lodash";
 import { useState, useMemo, useEffect } from "react";
-import { ImSearch } from "react-icons/im";
 
 type SearchInputProps = {
   onSearch: (query: string) => void;
@@ -9,7 +8,7 @@ type SearchInputProps = {
 function Navbar({ onSearch }: SearchInputProps) {
   const [, setValue] = useState("");
 
-  const debouncedSearch = useMemo(() => debounce(onSearch, 500), [onSearch]);
+  const debouncedSearch = useMemo(() => debounce(onSearch, 1000), [onSearch]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
@@ -39,7 +38,6 @@ function Navbar({ onSearch }: SearchInputProps) {
           placeholder="Buscar filme..."
           onChange={handleChange}
         />
-        <ImSearch className="cursor-pointer" color="#4a5565" />
       </li>
     </ul>
   );
