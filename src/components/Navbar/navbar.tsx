@@ -23,10 +23,10 @@ function Navbar({ onSearch }: SearchInputProps) {
   }, [debouncedSearch]);
 
   return (
-    <ul className="flex w-full h-12 bg-teal-300 items-center justify-between">
+    <ul className="flex w-full h-12 bg-teal-600 items-center justify-between border-b-1 border-gray-500">
       <a
         href="/"
-        className="text-md font-bold text-gray-600 uppercase pl-10 cursor-pointer"
+        className="text-md font-bold text-white uppercase pl-10 cursor-pointer"
       >
         Home
       </a>

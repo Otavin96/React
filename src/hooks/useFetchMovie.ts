@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Movie } from "../dtos/movies";
+import type { Movie, MoviesApiResponse } from "../dtos/movies";
 import { api } from "../api/api";
 
 type UseFetchMoviesProps = {
@@ -12,6 +12,7 @@ export const useFetchMovies = ({
   page = 1,
 }: UseFetchMoviesProps) => {
   const [movies, setMovies] = useState<Movie[]>([]);
+  const [data, setData] = useState<MoviesApiResponse>();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -30,6 +31,7 @@ export const useFetchMovies = ({
             sort_by: "popularity.desc",
           },
         });
+        setData(response.data);
         setMovies(response.data.results);
       } catch (err) {
         setError(err as Error);
@@ -41,5 +43,5 @@ export const useFetchMovies = ({
     fetchMovies();
   }, [query, page]);
 
-  return { movies, isLoading, error };
+  return { movies, data, isLoading, error };
 };

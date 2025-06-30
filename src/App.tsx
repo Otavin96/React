@@ -2,10 +2,12 @@ import { useState } from "react";
 import CardMovie from "./components/Card/cardMovie";
 import Navbar from "./components/Navbar/navbar";
 import { useFetchMovies } from "./hooks/useFetchMovie";
+import { Pagination } from "./components/Pagination";
 
 function App() {
   const [query, setQuery] = useState("");
-  const { movies, isLoading, error } = useFetchMovies({ query });
+  const [page, setPage] = useState(1);
+  const { movies, data, isLoading, error } = useFetchMovies({ query, page });
 
   if (isLoading) return <p>Carregando...</p>;
   if (movies.length === 0)
@@ -17,6 +19,8 @@ function App() {
       <Navbar onSearch={setQuery} />
 
       <CardMovie movies={movies} />
+
+      <Pagination total_pages={data!.total_pages} setPage={setPage} page={page} />
     </main>
   );
 }
