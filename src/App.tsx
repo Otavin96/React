@@ -3,6 +3,7 @@ import CardMovie from "./components/Card/cardMovie";
 import Navbar from "./components/Navbar/navbar";
 import { useFetchMovies } from "./hooks/useFetchMovie";
 import { Pagination } from "./components/Pagination";
+import { Footer } from "./components/Footer";
 
 function App() {
   const [query, setQuery] = useState("");
@@ -20,7 +21,13 @@ function App() {
 
       <CardMovie movies={movies} />
 
-      <Pagination total_pages={data!.total_pages} setPage={setPage} page={page} />
+      <Pagination
+        total_pages={data!.total_pages}
+        setPage={setPage}
+        page={page}
+      />
+
+      <Footer />
     </main>
   );
 }
